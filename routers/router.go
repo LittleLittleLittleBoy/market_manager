@@ -1,6 +1,10 @@
 package routers
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func InitRouter() *gin.Engine {
 	r := gin.Default()
@@ -10,6 +14,15 @@ func InitRouter() *gin.Engine {
 			"message": "pong",
 		})
 	})
-	r.POST("/identityAccount", identityAccount)
+
+	r.StaticFS("/html", http.Dir("static"))
+	r.StaticFS("/images", http.Dir("images"))
+
+	apiGroup := r.Group("api")
+	{
+		apiGroup.POST("/upload", uploadImage)
+		apiGroup.POST("/identityAccount", identityAccount)
+	}
+
 	return r
 }

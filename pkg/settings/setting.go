@@ -23,11 +23,11 @@ func Setup() {
 	yfile, err := ioutil.ReadFile("config.yaml")
 
 	if err != nil {
-		log.Fatal("config file can not read,", err)
+		log.Println("config file can not read,", err)
 	}
 
 	err = yaml.Unmarshal(yfile, Config)
 	if err != nil {
-		log.Fatal("config file can not map tp yaml", err)
+		log.Println("config file can not map tp yaml", err)
 	}
 }

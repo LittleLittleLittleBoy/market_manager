@@ -1,18 +1,14 @@
 package main
 
 import (
-	"log"
-
-	"github.com/littlelittlelittleboy/market_manager/pkg/ocr"
 	"github.com/littlelittlelittleboy/market_manager/pkg/settings"
+	"github.com/littlelittlelittleboy/market_manager/routers"
 )
 
 func main() {
 	settings.Setup()
 
-	log.Println(ocr.GetImageContent("https://imgse.com/i/xJjwm8"))
+	r := routers.InitRouter()
 
-	// r := routers.InitRouter()
-
-	// r.Run()
+	r.Run()
 }
