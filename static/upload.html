@@ -1,9 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
 <body>
-    <form action="/api/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="image" size="50">
-        <button type="submit">OK</button>
-    </form>
+    <p>粘贴的内容是:</p>
+    <p id="view"></p>
+    <button onclick="uploadImage()">OK</button>
 </body>
+<script type="text/javascript">
+    let content = document.querySelector("#view");
+
+    let formData = new FormData();
+
+    document.addEventListener("paste", function(event){
+        let imageData = event.clipboardData.items;
+        if(imageData.length>0 && imageData[0].kind == 'file'){
+            let blob = imageData[0].getAsFile();
+            let reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onload = function(e){
+                let img = document.createElement('img');
+                img.src = e.target.result;
+                while(content.lastChild){
+                    content.removeChild(content.lastChild)
+                }
+                content.appendChild(img);
+
+                formData.set('image', blob);
+            }
+        }
+    })
+
+    function uploadImage(){
+        $.ajax({
+        url: "/api/upload",
+        type: 'post',
+        dataType: 'json',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response)
+        {
+            console.log(response.data.image_url)
+        }
+    })
+    }
+</script>
 </html>
