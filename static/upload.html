@@ -33,17 +33,17 @@
 
     function uploadImage(){
         $.ajax({
-        url: "/api/upload",
-        type: 'post',
-        dataType: 'json',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response)
-        {
-            console.log(response.data.image_url)
-        }
-    })
+            url: "/api/upload",
+            type: 'post',
+            dataType: 'json',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response)
+            {
+                console.log(response.data.image_url)
+            }
+        })
     }
 </script>
 </html>
