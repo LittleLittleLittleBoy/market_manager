@@ -3,14 +3,24 @@
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 
 <body>
-    <p>粘贴的内容是:</p>
+    <h3 id:="errorInfo" style="color: red;"></h2>
+    <p>Image from cliqboard</p>
     <p id="view"></p>
-    <button onclick="uploadImage()">OK</button>
+    <button onclick="uploadImage()">Upload</button>
+    <p></p>
+    <button onclick="getImageContent()">Read from Image</button>
+    <p>Text in image : <span id="imageContent"></span></p>
+    <p>User name <input type="text"/></p> 
+    <p>Password <input type="text"/></p>
+    <button onclick="saveUserInfo()">Save</button>
 </body>
 <script type="text/javascript">
     let content = document.querySelector("#view");
+    let errorInfo = document.querySelector("#errorInfo");
 
     let formData = new FormData();
+
+    let imageUrl = ""
 
     document.addEventListener("paste", function(event){
         let imageData = event.clipboardData.items;
@@ -41,7 +51,30 @@
             contentType: false,
             success: function(response)
             {
-                console.log(response.data.image_url)
+                imageUrl = response.data.image_url
+                errorInfo.contentType = ""
+            },
+        })
+    }
+
+
+    function getImageContent(){
+        if (imageUrl == undefined || imageUrl== null || imageUrl== ''){
+            errorInfo.textContent = "Image URL is empty";
+            return
+        }else{
+            errorInfo.textContent = '';
+        }
+        $.ajax({
+            url: "/api/upload",
+            type: 'post',
+            dataType: 'json',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response)
+            {
+                imageUrl = response.data.image_url
             }
         })
     }
